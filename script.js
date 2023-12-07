@@ -1,7 +1,7 @@
 /** @type HTMLTextAreaElement */
 let wordArea = document.getElementById("wordArea");
 /** @type HTMLDivElement */
-let treeArea = document.getElementById("treeArea");
+let treeArea= document.getElementById("theTree");
 
 let colorClassList = ["red","green","blue","white"];
 let currentColor = 0;
@@ -9,7 +9,7 @@ wordArea.oninput = createChristmasTree;
 createChristmasTree();
 
 function createChristmasTree() {
-    treeArea.innerHTML="<div id='star'>⭐</div><div class='branch'></div>";
+    treeArea.innerHTML="";
     let words = wordArea.value.split("\n");
     words.sort((a,b)=>a.length-b.length);
     words.forEach( (word) => {

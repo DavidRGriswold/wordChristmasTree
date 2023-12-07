@@ -43,7 +43,19 @@ body {
     background-color:rgb(0, 0, 0);
     flex-basis: 75%;
 }
+#theTree {
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+}
 
+#trunk {
+    width: 2rem;
+    margin-top:0.1rem;
+    height: 2rem;
+    background-color:rgb(95, 58, 10);
+    border-radius:0.3rem;
+}
 #wordArea {
     width: 80%;
 }
