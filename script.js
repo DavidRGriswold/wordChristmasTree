@@ -3,11 +3,15 @@ let wordArea = document.getElementById("wordArea");
 /** @type HTMLDivElement */
 let treeArea= document.getElementById("theTree");
 let glowBox = document.getElementById("glowCheckbox");
-
+let blinkBox = document.getElementById("blinkCheckbox");
 let colorClassList = ["red","green","blue","white"];
 let currentColor = 0;
+let blinkTime = 300;
+
 wordArea.oninput = createChristmasTree;
 glowBox.onchange = createChristmasTree;
+blinkBox.onchange = createChristmasTree;
+
 createChristmasTree();
 
 function createChristmasTree() {
@@ -22,7 +26,8 @@ function createChristmasTree() {
         for (let char of word.split("")) {
             let letter = document.createElement("span");
             letter.classList.add("letter");
-            if (glowBox.checked) letter.classList.add("glow");
+            if (glowBox.checked && !blinkBox.checked) letter.classList.add("glow");
+            if (blinkBox.checked) setUpBlinking(letter);
             letter.classList.add(colorClassList[currentColor]);
             letter.innerText = char;
             currentColor++;
@@ -32,4 +37,20 @@ function createChristmasTree() {
         treeArea.appendChild(branch);
         currentColor=0;
     });   
+}
+
+function setUpBlinking(letter) {
+    setTimeout(() =>
+        setInterval( () => switchGlow(letter)
+        ,blinkTime*colorClassList.length)
+    ,currentColor*blinkTime   );
+}
+
+function switchGlow(/**@type HTMLElement*/ letter) {
+    if (letter.classList.contains("glow")) {
+        letter.classList.remove("glow");
+    }else{
+        letter.classList.add("glow");
+        setTimeout(()=>letter.classList.remove("glow"),blinkTime);
+    }
 }
