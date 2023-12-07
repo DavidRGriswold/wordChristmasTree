@@ -87,7 +87,8 @@ function setUpBlinking() {
       
     }else{
         clearTimeoutsAndIntervals();
-        document.getElementsByClassName("glow").forEach((e)=>e.classList.remove("glow"));
+        let glowers = document.getElementsByClassName("glow");
+        for (glower of glowers) glower.classList.remove("glow");
     }
 }
         
