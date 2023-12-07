@@ -8,7 +8,7 @@ body {
     color:#dddddd;
 }
 #star {
-    content:⭐;
+    font-size:2rem;
 }
 #wrap {
     width: 80%;

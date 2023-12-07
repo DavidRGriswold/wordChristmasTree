@@ -26,7 +26,7 @@ function createChristmasTree() {
         for (let char of word.split("")) {
             let letter = document.createElement("span");
             letter.classList.add("letter");
-            if (glowBox.checked && !blinkBox.checked) letter.classList.add("glow");
+            if (glowBox.checked) letter.classList.add("glow");
             if (blinkBox.checked) setUpBlinking(letter);
             letter.classList.add(colorClassList[currentColor]);
             letter.innerText = char;
@@ -44,6 +44,10 @@ function setUpBlinking(letter) {
         setInterval( () => switchGlow(letter)
         ,blinkTime*colorClassList.length)
     ,currentColor*blinkTime   );
+    setTimeout(() =>
+        setInterval( () => switchGlow(letter)
+        ,blinkTime*colorClassList.length)
+    ,(currentColor+1)*blinkTime   );
 }
 
 function switchGlow(/**@type HTMLElement*/ letter) {
@@ -51,6 +55,5 @@ function switchGlow(/**@type HTMLElement*/ letter) {
         letter.classList.remove("glow");
     }else{
         letter.classList.add("glow");
-        setTimeout(()=>letter.classList.remove("glow"),blinkTime);
     }
 }
