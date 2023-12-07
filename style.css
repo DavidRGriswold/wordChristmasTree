@@ -30,9 +30,14 @@ body {
 #sidebar {
     display:flex;
     flex-direction:column;
-    align-items: flex-start;
+    align-items: center;
     flex-basis:25%;
-    justify-content:center;
+    justify-content:start;
+}
+
+#checkboxholder {
+    display:flex;
+    margin-bottom: 0.2rem;
 }
 
 #treeArea {
@@ -77,6 +82,22 @@ body {
     color:rgb(110, 110, 255);
 }
 
+.white {
+    color:white;
+}
+
 .blue.glow {
     text-shadow: 0 0 5px #6e6eff, 0 0 10px #b9b9fc, 0 0 15px #ffffff;
+}
+
+.green.glow {
+    text-shadow: 0 0 5px #81ff6e, 0 0 10px #c2fcb9, 0 0 15px #ffffff;
+}
+
+.red.glow {
+    text-shadow: 0 0 5px #ff6e6e, 0 0 10px #fcb9b9, 0 0 15px #ffffff;
+}
+
+.white.glow {
+    text-shadow: 0 0 5px rgb(198, 247, 198), 0 0 10px #e3ffe8, 0 0 15px #ffffff;
 }
