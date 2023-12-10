@@ -143,8 +143,18 @@ function setUpBlinking() {
       
     }else{
         clearTimeoutsAndIntervals();
-        let glowers = document.getElementsByClassName("glow");
-        for (glower of glowers) glower.classList.remove("glow");
+        if (!glowBox.checked) {
+            let glowers = document.querySelectorAll(".glow");
+            for (let glower of glowers) {
+                glower.classList.remove("glow");
+            }
+        }else {
+            let letters = document.querySelectorAll(".letter");
+            for (let letter of letters) {
+                if (!letter.classList.contains("glow")) letter.classList.add("glow");
+            }
+        }
+        
     }
 }
         
