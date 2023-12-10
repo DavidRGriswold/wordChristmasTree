@@ -45,8 +45,9 @@ if (inputMusic && inputMusic == "1") {
     musicBox.checked = true;
 }
 
-if (inputBlink && inputBlink.checked == "1") {
+if (inputBlink && inputBlink == "1") {
     blinkBox.checked = true;
+    setUpBlinking();
 }
 
 if (baseName.includes("?")) baseName = baseName.substring(0,baseName.indexOf("?"));
