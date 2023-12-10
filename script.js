@@ -94,7 +94,7 @@ function createChristmasTree() {
         if (len == lastlength) {
             extraPadding += 0.25;
         }else{
-            extraPadding -= 0.5;
+            extraPadding -= 0.5 * (len - lastlength);
             if (extraPadding < 0) extraPadding = 0;
         }
         lastlength = len;
