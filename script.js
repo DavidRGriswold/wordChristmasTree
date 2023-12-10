@@ -242,7 +242,7 @@ function setUpSnow() {
         flake.style.left = Math.random() * maxPercent + "%";
         flake.style.top = "-1rem";
         flake.style.animationDelay = 0.2*i + "s";
-        treeArea.appendChild(flake);
+        area.appendChild(flake);
     }
 }else{
     let flakes = document.querySelectorAll(".flake");
