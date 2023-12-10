@@ -78,9 +78,24 @@ function createChristmasTree() {
     let words = wordArea.value.split("\n");
     words.sort((a, b) => a.length - b.length);
     words.forEach((word) => {
+        let len = word.length;
+        let numSpaces = len - word.trim().length;
+        let numDots = Math.floor(numSpaces / 2);
+        numSpaces -= 2 * numDots;
+        // split these spaces in between letters and to the edges
+        
+        word = word.trim();
+        word = "•".repeat(numDots) + word + "•".repeat(numDots);
         if (word.trim() == "") return;
         let branch = document.createElement("div");
         branch.classList.add("branch");
+        // split extra spacing so that the edges get 2 times
+        // the spacing as between letters
+        let numSpots = word.length+3;
+        let spacing = numSpaces / numSpots;
+        branch.style.paddingLeft = 1.5 + spacing + "ch";
+        branch.style.paddingRight = "1.5ch";
+        branch.style.letterSpacing = spacing + "ch";
         // now add spans for each letter
         let chars = word.split("");
         if (direction < 0) {
@@ -96,6 +111,7 @@ function createChristmasTree() {
                 if (currentColor == colorClassList.length) currentColor = 0;
             }
             letter.innerText = char;
+            ;
             if (direction > 0) branch.appendChild(letter);
             else branch.insertBefore(letter, branch.firstChild);
         }
