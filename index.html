@@ -1,35 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Word Christmas Tree</title>
-  </head>
-  <body>
-    <div id="wrap">
-      <h1 id="title">Make a word Christmas tree!</h1>
-      <div id="main">
-        <div id="sidebar">
-            <div class="checkboxholder"><label for="glowCheckbox">Glow?</label>
-          <input type="checkbox" id="glowCheckbox"></div>
-          <div class="checkboxholder"><label for="blinkCheckbox">Blink?</label>
-            <input type="checkbox" id="blinkCheckbox"></div>
-          <label for="words">Words</label>
-          <textarea title="words" id="wordArea" cols="30" rows="40">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Word Christmas Tree</title>
+  <script src="libs/base64-string.js"></script>
+  <script src="libs/lz-string.js"></script>
+</head>
+
+<body>
+  <div id="wrap">
+    <h1 id="title">Make a word Christmas tree!</h1>
+    <div id="shareArea">
+      <label for="shareURL">Share URL (double-click to copy): </label>
+      <input readonly title="shareURL" type="text" id="shareURLBox"></text>
+    </div>
+    <div id="main">
+      <div id="sidebar">
+        <div class="checkboxholder">
+          <label for="glowCheckbox">Glow?</label>
+          <input type="checkbox" id="glowCheckbox">
+        </div>
+        <div class="checkboxholder">
+          <label for="blinkCheckbox">Blink?</label>
+          <input type="checkbox" id="blinkCheckbox">
+        </div>
+        <div class="checkboxholder">
+          <label for="musicCheckbox">Music?</label>
+          <input type="checkbox" id="musicCheckbox">
+        </div>
+        <label for="words">Words</label>
+        <textarea title="words" id="wordArea" cols="30" rows="40">
 Words
 Go
-Here</textarea
-          >
-        </div>
-        <div id="treeArea">
-          <div id="star">⭐</div>
-          <div id="theTree"></div>
-          <div id="trunk"></div>
-        </div>
+Here</textarea>
+        <audio id="song" loop hidden controls src="bells.mp3"></audio>
+      </div>
+      <div id="treeArea">
+
+        <div id="star">⭐</div>
+        <div id="theTree"></div>
+        <div id="trunk"></div>
       </div>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+  </div>
+
+  <script src="script.js"></script>
+
+
+</body>
+
 </html>

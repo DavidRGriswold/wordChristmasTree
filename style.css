@@ -14,13 +14,19 @@ body {
     width: 80%;
     display: flex;
     flex-direction:column;
-    justify-content:center;
     margin:auto;
     max-width: 1000px;
+    align-items: center;
+}
+
+audio {
+    width:80%;
 }
 
 #main {
     display:flex;
+    width:100%;
+    margin-bottom: 4rem;
 }
 
 #title {
@@ -31,7 +37,7 @@ body {
     display:flex;
     flex-direction:column;
     align-items: center;
-    flex-basis:25%;
+    width:25%;
     justify-content:start;
 }
 
@@ -46,7 +52,7 @@ body {
     align-items:center;
     flex-direction:column;
     background-color:rgb(0, 0, 0);
-    flex-basis: 75%;
+    width: 75%;
 }
 #theTree {
     display:flex;
@@ -63,6 +69,24 @@ body {
 }
 #wordArea {
     width: 80%;
+    white-space: nowrap;
+    overflow:scroll;
+}
+
+#shareArea {
+    max-width:100%;
+    width:100%;
+}
+#shareURLBox {
+    width:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    width: 100%;
+    color:black;
+    background-color: #dddddd;
+    padding: 0.2rem;
+    margin-bottom: 1rem;
+    border: 1px solid black;
 }
 
 .branch {
