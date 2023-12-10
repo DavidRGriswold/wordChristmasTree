@@ -3,7 +3,7 @@
 /** @type HTMLTextAreaElement */
 let wordArea = document.getElementById("wordArea");
 /** @type HTMLDivElement */
-let treeArea= document.getElementById("theTree");
+let treeArea = document.getElementById("theTree");
 let glowBox = document.getElementById("glowCheckbox");
 let blinkBox = document.getElementById("blinkCheckbox");
 let musicBox = document.getElementById("musicCheckbox");
@@ -11,7 +11,7 @@ let musicBox = document.getElementById("musicCheckbox");
 let shareURL = document.getElementById("shareURLBox");
 /** @type HTMLAudioElement */
 let song = document.getElementById("song");
-let colorClassList = ["red","green","blue","white"];
+let colorClassList = ["red", "green", "blue", "white"];
 let currentColor = 0;
 let blinkTime = 300;
 
@@ -50,7 +50,7 @@ if (inputBlink && inputBlink == "1") {
     setUpBlinking();
 }
 
-if (baseName.includes("?")) baseName = baseName.substring(0,baseName.indexOf("?"));
+if (baseName.includes("?")) baseName = baseName.substring(0, baseName.indexOf("?"));
 
 
 createChristmasTree();
@@ -58,15 +58,15 @@ createChristmasTree();
 function update() {
     if (musicBox.checked) {
         song.play();
-    }else{
+    } else {
         song.pause();
     }
     let url = new URL(baseName);
-    if (blinkBox.checked) url.searchParams.append("b","1");
-    if (musicBox.checked) url.searchParams.append("m","1");
-    if (glowBox.checked) url.searchParams.append("g","1");
+    if (blinkBox.checked) url.searchParams.append("b", "1");
+    if (musicBox.checked) url.searchParams.append("m", "1");
+    if (glowBox.checked) url.searchParams.append("g", "1");
     const b64txt = convertStringToBase64URL(wordArea.value);
-    url.searchParams.append("w",b64txt);
+    url.searchParams.append("w", b64txt);
     shareURL.value = url.href;
 }
 
@@ -74,11 +74,11 @@ function createChristmasTree() {
     update();
     let direction = 1;
 
-    treeArea.innerHTML="";
+    treeArea.innerHTML = "";
     let words = wordArea.value.split("\n");
-    words.sort((a,b)=>a.length-b.length);
-    words.forEach( (word) => {
-        if (word.trim()=="") return;
+    words.sort((a, b) => a.length - b.length);
+    words.forEach((word) => {
+        if (word.trim() == "") return;
         let branch = document.createElement("div");
         branch.classList.add("branch");
         // now add spans for each letter
@@ -88,21 +88,23 @@ function createChristmasTree() {
         }
         for (let char of chars) {
             let letter = document.createElement("span");
-            letter.classList.add("letter");
-            if (glowBox.checked) letter.classList.add("glow");
-            letter.classList.add(colorClassList[currentColor]);
+            if (char.match(/\S/g)) {
+                letter.classList.add("letter");
+                if (glowBox.checked) letter.classList.add("glow");
+                letter.classList.add(colorClassList[currentColor]);
+                currentColor++;
+                if (currentColor == colorClassList.length) currentColor = 0;
+            }
             letter.innerText = char;
-            currentColor++;
-            if (currentColor == colorClassList.length) currentColor = 0;
             if (direction > 0) branch.appendChild(letter);
             else branch.insertBefore(letter, branch.firstChild);
         }
-        
+
         treeArea.appendChild(branch);
-        direction=-direction
-        
+        direction = -direction
+
     });
-    currentColor=0; 
+    currentColor = 0;
 }
 
 function clearTimeoutsAndIntervals() {
@@ -117,59 +119,59 @@ function clearTimeoutsAndIntervals() {
 function setUpBlinking() {
     update();
     if (blinkBox.checked) {
-        for (let i = 0; i < colorClassList.length; i++){
+        for (let i = 0; i < colorClassList.length; i++) {
             let color = colorClassList[i];
             let startTime = i * blinkTime;
             let switchTime = blinkTime * colorClassList.length;
             timeouts.push(
-                setTimeout( () => {
-                    intervals.push(setInterval( () => {
+                setTimeout(() => {
+                    intervals.push(setInterval(() => {
                         switchGlow(color);
-                        },switchTime
+                    }, switchTime
                     ));
                 }
-                ,startTime
-            ));
+                    , startTime
+                ));
             timeouts.push(
-                setTimeout( () => {
-                    intervals.push(setInterval( () => {
+                setTimeout(() => {
+                    intervals.push(setInterval(() => {
                         switchGlow(color);
-                        },switchTime
+                    }, switchTime
                     ));
                 }
-                ,startTime+blinkTime
-            ));
+                    , startTime + blinkTime
+                ));
         }
-      
-    }else{
+
+    } else {
         clearTimeoutsAndIntervals();
         if (!glowBox.checked) {
             let glowers = document.querySelectorAll(".glow");
             for (let glower of glowers) {
                 glower.classList.remove("glow");
             }
-        }else {
+        } else {
             let letters = document.querySelectorAll(".letter");
             for (let letter of letters) {
                 if (!letter.classList.contains("glow")) letter.classList.add("glow");
             }
         }
-        
+
     }
 }
-        
+
 
 
 function switchGlow(/**@type HTMLElement*/ color) {
     update();
     let letters = document.getElementsByClassName(color);
     for (letter of letters) {
-    if (letter.classList.contains("glow")) {
-        letter.classList.remove("glow");
-    }else{
-        letter.classList.add("glow");
+        if (letter.classList.contains("glow")) {
+            letter.classList.remove("glow");
+        } else {
+            letter.classList.add("glow");
+        }
     }
-}
 }
 
 function convertStringToBase64URL(str) {
@@ -190,7 +192,7 @@ function convertBase64URLtoString(b64) {
 }
 
 function copyShareURL() {
-    shareURL.setSelectionRange(0,99999);
+    shareURL.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(shareURL.value);
-    shareURL.setSelectionRange(0,0);
+    shareURL.setSelectionRange(0, 0);
 }
