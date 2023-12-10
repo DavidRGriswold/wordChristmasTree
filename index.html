@@ -11,7 +11,9 @@
 </head>
 
 <body>
+  
   <div id="wrap">
+    
     <h1 id="title">Make a word Christmas tree!</h1>
     <div id="shareArea">
       <label for="shareURL">Share URL (double-click to copy): </label>
@@ -31,16 +33,25 @@
           <label for="musicCheckbox">Music?</label>
           <input type="checkbox" id="musicCheckbox">
         </div>
-        <label for="words">Words</label>
+        <div class="checkboxholder">
+          <label for="snowCheckbox">Snow?</label>
+          <input type="checkbox" id="snowCheckbox">
+        </div>
+        <label id="wordlabel" for="words">Branches</label>
         <textarea title="words" id="wordArea" cols="30" rows="40">
-Words
-Go
-Here</textarea>
+Put
+your
+words
+and phrases
+Here!        
+You can add spaces
+at the end if you want      
+to get extra length     </textarea>
         <audio id="song" loop hidden controls src="bells.mp3"></audio>
       </div>
       <div id="treeArea">
-
-        <div id="star">⭐</div>
+        <div class="flake"></div>
+         <div id="star">⭐</div>
         <div id="theTree"></div>
         <div id="trunk"></div>
       </div>

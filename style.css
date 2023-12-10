@@ -3,6 +3,7 @@
 }
 
 body {
+    font-family:Consolas, monaco, monospace;
     margin:0;
     background-color:darkgreen;
     color:#dddddd;
@@ -25,6 +26,7 @@ audio {
 
 #main {
     display:flex;
+    align-items:start;
     width:100%;
     margin-bottom: 4rem;
 }
@@ -47,11 +49,17 @@ audio {
 }
 
 #treeArea {
-    font-family:Consolas, monaco, monospace;
+    padding-bottom:1rem;
+    padding-top: 0.5rem;
+    min-height: 20rem;
+    border-radius: 0.2rem;
+    position:relative;
     display:flex;
     align-items:center;
     flex-direction:column;
     background-color:rgb(0, 0, 0);
+    z-index: -2;
+    overflow:hidden;
     width: 75%;
 }
 #theTree {
@@ -73,6 +81,10 @@ audio {
     overflow:scroll;
 }
 
+#wordlabel {
+    margin-top: 1rem;
+}
+
 #shareArea {
     max-width:100%;
     width:100%;
@@ -89,21 +101,47 @@ audio {
     border: 1px solid black;
 }
 
+.flake::before {
+    content:"❄";
+}
+
+.flake {
+    position: absolute;
+    left:0;
+    top:0;
+    display:inline-block;
+    color: white;
+    padding:0;
+    z-index:-1;
+    line-height:1;
+    animation-name: fall;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count:infinite;
+}
+
+@keyframes fall {
+    from {top:-1rem;}
+    to {top:100%;}
+}
+
+
+
 .branch {
     min-height:1rem;
-    background-color:rgb(0, 68, 0);
+    background-color:rgb(0, 52, 0);
     padding: 0.1rem 1.5ch;
-    clip-path:polygon(1rem 0, calc(100% - 1rem) 0, 100% 100%, 0 100%);
+    clip-path:polygon(1.5ch 0, calc(100% - 1.5ch) 0, 100% 100%, 0 100%);
 }
 
 .red {
-    color:rgb(254, 82, 82);
+    color:rgb(251, 122, 122);
 }
 .green{
     color:rgb(134, 255, 134);
 }
 .blue{
-    color:rgb(110, 110, 255);
+    color:rgb(142, 142, 252);
 }
 
 .white {
@@ -111,15 +149,15 @@ audio {
 }
 
 .blue.glow {
-    text-shadow: 0 0 5px #a2a2fc, 0 0 10px #dedefd, 0 0 15px #ffffff;
+    text-shadow: 0 0 7px #a2a2fc, 0 0 12px #dedefd, 0 0 15px #ffffff;
 }
 
 .green.glow {
-    text-shadow: 0 0 5px #81ff6e, 0 0 10px #c2fcb9, 0 0 15px #ffffff;
+    text-shadow: 0 0 7px #81ff6e, 0 0 12px #c2fcb9, 0 0 15px #ffffff;
 }
 
 .red.glow {
-    text-shadow: 0 0 5px #ff6e6e, 0 0 10px #fcb9b9, 0 0 15px #ffffff;
+    text-shadow: 0 0 7px #ff6e6e, 0 0 12px #fcb9b9, 0 0 15px #ffffff;
 }
 
 .white.glow {

@@ -7,6 +7,7 @@ let treeArea = document.getElementById("theTree");
 let glowBox = document.getElementById("glowCheckbox");
 let blinkBox = document.getElementById("blinkCheckbox");
 let musicBox = document.getElementById("musicCheckbox");
+let snowBox = document.getElementById("snowCheckbox");
 /** @type HTMLInputElement */
 let shareURL = document.getElementById("shareURLBox");
 /** @type HTMLAudioElement */
@@ -18,6 +19,7 @@ let blinkTime = 300;
 wordArea.oninput = createChristmasTree;
 glowBox.onchange = createChristmasTree;
 blinkBox.onchange = setUpBlinking;
+snowBox.onchange = setUpSnow;
 musicBox.onchange = update;
 shareURL.ondblclick = copyShareURL;
 document.onclick = update;
@@ -30,6 +32,7 @@ let inputb64 = ourURL.searchParams.get("w");
 let inputBlink = ourURL.searchParams.get("b");
 let inputMusic = ourURL.searchParams.get("m");
 let inputGlow = ourURL.searchParams.get("g");
+let inputSnow = ourURL.searchParams.get("s");
 let baseName;
 baseName = window.location.href;
 if (inputb64) {
@@ -50,6 +53,11 @@ if (inputBlink && inputBlink == "1") {
     setUpBlinking();
 }
 
+if (inputSnow && inputSnow == "1") {
+    snowBox.checked = true;
+    setUpSnow();
+}
+
 if (baseName.includes("?")) baseName = baseName.substring(0, baseName.indexOf("?"));
 
 
@@ -65,9 +73,11 @@ function update() {
     if (blinkBox.checked) url.searchParams.append("b", "1");
     if (musicBox.checked) url.searchParams.append("m", "1");
     if (glowBox.checked) url.searchParams.append("g", "1");
+    if (snowBox.checked) url.searchParams.append("s", "1");
     const b64txt = convertStringToBase64URL(wordArea.value);
     url.searchParams.append("w", b64txt);
     shareURL.value = url.href;
+    if (!blinkBox.checked) clearTimeoutsAndIntervals();
 }
 
 function createChristmasTree() {
@@ -77,24 +87,31 @@ function createChristmasTree() {
     treeArea.innerHTML = "";
     let words = wordArea.value.split("\n");
     words.sort((a, b) => a.length - b.length);
+    let extraPadding = 0;
+    let lastlength = 0;
     words.forEach((word) => {
         let len = word.length;
+        if (len == lastlength) {
+            extraPadding += 0.25;
+        }else{
+            extraPadding = 0;
+        }
+        lastlength = len;
         let numSpaces = len - word.trim().length;
         let numDots = Math.floor(numSpaces / 2);
         numSpaces -= 2 * numDots;
         // split these spaces in between letters and to the edges
         
         word = word.trim();
+        if (numDots > 1) {numDots--; word = " " + word + " "}
         word = "•".repeat(numDots) + word + "•".repeat(numDots);
         if (word.trim() == "") return;
         let branch = document.createElement("div");
         branch.classList.add("branch");
-        // split extra spacing so that the edges get 2 times
-        // the spacing as between letters
         let numSpots = word.length+3;
         let spacing = numSpaces / numSpots;
-        branch.style.paddingLeft = 1.5 + spacing + "ch";
-        branch.style.paddingRight = "1.5ch";
+        branch.style.paddingLeft = 1.6 + extraPadding + spacing + "ch";
+        branch.style.paddingRight = 1.6 + extraPadding + "ch";
         branch.style.letterSpacing = spacing + "ch";
         // now add spans for each letter
         let chars = word.split("");
@@ -133,8 +150,8 @@ function clearTimeoutsAndIntervals() {
 }
 
 function setUpBlinking() {
-    update();
-    if (blinkBox.checked) {
+    
+    if (blinkBox.checked && intervals.length == 0) {
         for (let i = 0; i < colorClassList.length; i++) {
             let color = colorClassList[i];
             let startTime = i * blinkTime;
@@ -159,7 +176,7 @@ function setUpBlinking() {
                 ));
         }
 
-    } else {
+    } else if (!blinkBox.checked) {
         clearTimeoutsAndIntervals();
         if (!glowBox.checked) {
             let glowers = document.querySelectorAll(".glow");
@@ -174,6 +191,7 @@ function setUpBlinking() {
         }
 
     }
+    update();
 }
 
 
@@ -211,4 +229,25 @@ function copyShareURL() {
     shareURL.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(shareURL.value);
     shareURL.setSelectionRange(0, 0);
+}
+
+function setUpSnow() {
+    if (snowBox.checked) {
+    // add 50 snowflakes with a 0.2 second delay in each
+    let area = document.getElementById("treeArea");
+    for (let i = 0; i < 50; i++) {
+        let flake = document.createElement("div");
+        flake.classList.add("flake");
+        let maxPercent = (1 - flake.offsetWidth / area.offsetWidth) * 100;
+        flake.style.left = Math.random() * maxPercent + "%";
+        flake.style.top = "-1rem";
+        flake.style.animationDelay = 0.2*i + "s";
+        treeArea.appendChild(flake);
+    }
+}else{
+    let flakes = document.querySelectorAll(".flake");
+    for (let flake of flakes) {
+        flake.remove();
+    }
+}
 }
