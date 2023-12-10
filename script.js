@@ -94,7 +94,8 @@ function createChristmasTree() {
         if (len == lastlength) {
             extraPadding += 0.25;
         }else{
-            extraPadding = 0;
+            extraPadding -= 0.5;
+            if (extraPadding < 0) extraPadding = 0;
         }
         lastlength = len;
         let numSpaces = len - word.trim().length;
@@ -109,9 +110,9 @@ function createChristmasTree() {
         let branch = document.createElement("div");
         branch.classList.add("branch");
         let numSpots = word.length+3;
-        let spacing = numSpaces / numSpots;
-        branch.style.paddingLeft = 1.6 + extraPadding + spacing + "ch";
-        branch.style.paddingRight = 1.6 + extraPadding + "ch";
+        let spacing = (numSpaces + extraPadding) / numSpots;
+        branch.style.paddingLeft = 1.6 + spacing + "ch";
+        branch.style.paddingRight = 1.6 + "ch";
         branch.style.letterSpacing = spacing + "ch";
         // now add spans for each letter
         let chars = word.split("");
