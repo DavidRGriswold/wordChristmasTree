@@ -14,10 +14,11 @@ let shareURL = document.getElementById("shareURLBox");
 let song = document.getElementById("song");
 let colorClassList = ["red", "green", "blue", "white"];
 let currentColor = 0;
+let blinkingColor = -1;
 let blinkTime = 300;
 
 wordArea.oninput = createChristmasTree;
-glowBox.onchange = createChristmasTree;
+glowBox.onchange = update;
 blinkBox.onchange = setUpBlinking;
 snowBox.onchange = setUpSnow;
 musicBox.onchange = update;
@@ -77,7 +78,14 @@ function update() {
     const b64txt = convertStringToBase64URL(wordArea.value);
     url.searchParams.append("w", b64txt);
     shareURL.value = url.href;
-    if (!blinkBox.checked) clearTimeoutsAndIntervals();
+    if (!blinkBox.checked) {
+        if (glowBox.checked) {
+
+            document.querySelectorAll(".letter").forEach((el) => el.classList.add("glow"));
+        } else {
+            document.querySelectorAll(".letter").forEach((el) => el.classList.remove("glow"));
+        }
+    }
 }
 
 function createChristmasTree() {
@@ -93,7 +101,7 @@ function createChristmasTree() {
         let len = word.length;
         if (len == lastlength) {
             extraPadding += 0.25;
-        }else{
+        } else {
             extraPadding -= 0.5 * (len - lastlength);
             if (extraPadding < 0) extraPadding = 0;
         }
@@ -102,14 +110,14 @@ function createChristmasTree() {
         let numDots = Math.floor(numSpaces / 2);
         numSpaces -= 2 * numDots;
         // split these spaces in between letters and to the edges
-        
+
         word = word.trim();
-        if (numDots > 1) {numDots--; word = " " + word + " "}
+        if (numDots > 1) { numDots--; word = " " + word + " " }
         word = "•".repeat(numDots) + word + "•".repeat(numDots);
         if (word.trim() == "") return;
         let branch = document.createElement("div");
         branch.classList.add("branch");
-        let numSpots = word.length+3;
+        let numSpots = word.length + 3;
         let spacing = (numSpaces + extraPadding) / numSpots;
         branch.style.paddingLeft = 1.6 + spacing + "ch";
         branch.style.paddingRight = 1.6 + "ch";
@@ -123,7 +131,6 @@ function createChristmasTree() {
             let letter = document.createElement("span");
             if (char.match(/\S/g)) {
                 letter.classList.add("letter");
-                if (glowBox.checked) letter.classList.add("glow");
                 letter.classList.add(colorClassList[currentColor]);
                 currentColor++;
                 if (currentColor == colorClassList.length) currentColor = 0;
@@ -139,6 +146,7 @@ function createChristmasTree() {
 
     });
     currentColor = 0;
+    update();
 }
 
 function clearTimeoutsAndIntervals() {
@@ -151,50 +159,24 @@ function clearTimeoutsAndIntervals() {
 }
 
 function setUpBlinking() {
-    
-    if (blinkBox.checked && intervals.length == 0) {
-        for (let i = 0; i < colorClassList.length; i++) {
-            let color = colorClassList[i];
-            let startTime = i * blinkTime;
-            let switchTime = blinkTime * colorClassList.length;
-            timeouts.push(
-                setTimeout(() => {
-                    intervals.push(setInterval(() => {
-                        switchGlow(color);
-                    }, switchTime
-                    ));
-                }
-                    , startTime
-                ));
-            timeouts.push(
-                setTimeout(() => {
-                    intervals.push(setInterval(() => {
-                        switchGlow(color);
-                    }, switchTime
-                    ));
-                }
-                    , startTime + blinkTime
-                ));
-        }
-
-    } else if (!blinkBox.checked) {
-        clearTimeoutsAndIntervals();
-        if (!glowBox.checked) {
-            let glowers = document.querySelectorAll(".glow");
-            for (let glower of glowers) {
-                glower.classList.remove("glow");
-            }
-        } else {
-            let letters = document.querySelectorAll(".letter");
-            for (let letter of letters) {
-                if (!letter.classList.contains("glow")) letter.classList.add("glow");
-            }
-        }
-
+    clearTimeoutsAndIntervals();
+    if (blinkBox.checked) {
+        intervals.push(setInterval(switchColor, blinkTime));
     }
     update();
 }
 
+function switchColor() {
+    blinkingColor++;
+    if (blinkingColor === colorClassList.length) blinkingColor = 0;
+    if (!glowBox.checked) {
+        document.querySelectorAll(".letter").forEach((el) => el.classList.remove("glow"));
+        document.querySelectorAll("." + colorClassList[blinkingColor]).forEach((el) => el.classList.add("glow"));
+    }else{
+        document.querySelectorAll(".letter").forEach((el) => el.classList.add("glow"));
+        document.querySelectorAll("." + colorClassList[blinkingColor]).forEach((el) => el.classList.remove("glow"));
+    }
+    }
 
 
 function switchGlow(/**@type HTMLElement*/ color) {
@@ -234,21 +216,21 @@ function copyShareURL() {
 
 function setUpSnow() {
     if (snowBox.checked) {
-    // add 50 snowflakes with a 0.2 second delay in each
-    let area = document.getElementById("treeArea");
-    for (let i = 0; i < 50; i++) {
-        let flake = document.createElement("div");
-        flake.classList.add("flake");
-        let maxPercent = (1 - flake.offsetWidth / area.offsetWidth) * 100;
-        flake.style.left = Math.random() * maxPercent + "%";
-        flake.style.top = "-1rem";
-        flake.style.animationDelay = 0.2*i + "s";
-        area.appendChild(flake);
+        // add 50 snowflakes with a 0.2 second delay in each
+        let area = document.getElementById("treeArea");
+        for (let i = 0; i < 50; i++) {
+            let flake = document.createElement("div");
+            flake.classList.add("flake");
+            let maxPercent = (1 - flake.offsetWidth / area.offsetWidth) * 100;
+            flake.style.left = Math.random() * maxPercent + "%";
+            flake.style.top = "-1rem";
+            flake.style.animationDelay = 0.2 * i + "s";
+            area.appendChild(flake);
+        }
+    } else {
+        let flakes = document.querySelectorAll(".flake");
+        for (let flake of flakes) {
+            flake.remove();
+        }
     }
-}else{
-    let flakes = document.querySelectorAll(".flake");
-    for (let flake of flakes) {
-        flake.remove();
-    }
-}
 }
