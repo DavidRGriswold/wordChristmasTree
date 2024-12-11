@@ -3,11 +3,13 @@
 /** @type HTMLTextAreaElement */
 let wordArea = document.getElementById("wordArea");
 /** @type HTMLDivElement */
-let treeArea = document.getElementById("theTree");
+let tree = document.getElementById("theTree");
+let treeArea = document.getElementById("treeArea");
 let glowBox = document.getElementById("glowCheckbox");
 let blinkBox = document.getElementById("blinkCheckbox");
 let musicBox = document.getElementById("musicCheckbox");
 let snowBox = document.getElementById("snowCheckbox");
+let fullButton = document.getElementById("fullButton");
 /** @type HTMLInputElement */
 let shareURL = document.getElementById("shareURLBox");
 /** @type HTMLAudioElement */
@@ -24,6 +26,7 @@ snowBox.onchange = setUpSnow;
 musicBox.onchange = update;
 shareURL.ondblclick = copyShareURL;
 document.onclick = update;
+fullButton.onclick = switchFull;
 
 let timeouts = [];
 let intervals = [];
@@ -92,7 +95,7 @@ function createChristmasTree() {
     update();
     let direction = 1;
 
-    treeArea.innerHTML = "";
+    tree.innerHTML = "";
     let words = wordArea.value.split("\n");
     words.sort((a, b) => a.length - b.length);
     let extraPadding = 0;
@@ -141,7 +144,7 @@ function createChristmasTree() {
             else branch.insertBefore(letter, branch.firstChild);
         }
 
-        treeArea.appendChild(branch);
+        tree.appendChild(branch);
         direction = -direction
 
     });
@@ -225,12 +228,22 @@ function setUpSnow() {
             flake.style.left = Math.random() * maxPercent + "%";
             flake.style.top = "-1rem";
             flake.style.animationDelay = 0.2 * i + "s";
-            area.appendChild(flake);
+            area.insertBefore(flake,area.firstChild);
         }
     } else {
         let flakes = document.querySelectorAll(".flake");
         for (let flake of flakes) {
             flake.remove();
         }
+    }
+}
+
+function switchFull() {
+    if (treeArea.classList.contains("full")) {
+        treeArea.classList.remove("full");
+        document.body.classList.remove("full");
+    }else {
+        treeArea.classList.add("full");
+        document.body.classList.add("full");
     }
 }
